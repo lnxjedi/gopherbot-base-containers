@@ -1,0 +1,38 @@
+FROM quay.io/app-sre/ubi8-ubi:8.3
+
+ARG username=robot
+ARG userid=1000
+ARG nonprivuser=nobody
+
+ARG installdir=/opt
+ARG homedir=/home/robot
+
+ARG goversion=1.15.5
+
+ENV HOME=/home/robot
+ENV PATH=${PATH}:${HOME}/go/bin:/usr/local/go/bin:/opt/gopherbot
+ENV USER=${username}
+
+RUN useradd -d ${homedir} -m -u ${userid} ${username} && \
+  dnf -y update && \
+  dnf -y install \
+    bind-utils \
+    procps-ng \
+    findutils \
+    git \
+    jq \
+    gcc \
+    gcc-c++ \
+    make \
+    openssh-clients \
+    python3 \
+    python3-pip \
+    ruby \
+    unzip \
+    vim \
+    zip && \
+  dnf clean all && \
+  rm -rf /var/cache /var/log/dnf* /var/log/dnf.*
+
+RUN cd /usr/local && \
+  curl -L https://dl.google.com/go/go${goversion}.linux-amd64.tar.gz | tar xzf -
