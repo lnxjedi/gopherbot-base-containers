@@ -30,6 +30,7 @@ RUN useradd -d ${homedir} -m -u ${userid} ${username} && \
     ruby \
     unzip \
     vim \
+    xz \
     zip && \
   dnf clean all && \
   rm -rf /var/cache /var/log/dnf* /var/log/dnf.*
