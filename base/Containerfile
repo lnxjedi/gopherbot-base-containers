@@ -13,7 +13,11 @@ ENV HOME=/home/robot
 ENV PATH=${PATH}:${HOME}/go/bin:/usr/local/go/bin:/opt/gopherbot
 ENV USER=${username}
 
-# Add a random UUID, thanks to https://www.uuidgenerator.net
+RUN cd /usr/local && \
+  curl -L https://dl.google.com/go/go${goversion}.linux-amd64.tar.gz | tar xzf -
+
+# Add a random UUID to avoid using the cache for desired updates,
+# thanks to https://www.uuidgenerator.net
 ADD https://www.uuidgenerator.net/api/version4 /uuid
 
 RUN useradd -d ${homedir} -m -u ${userid} ${username} && \
@@ -37,6 +41,3 @@ RUN useradd -d ${homedir} -m -u ${userid} ${username} && \
     zip && \
   dnf clean all && \
   rm -rf /var/cache /var/log/dnf* /var/log/dnf.*
-
-RUN cd /usr/local && \
-  curl -L https://dl.google.com/go/go${goversion}.linux-amd64.tar.gz | tar xzf -
