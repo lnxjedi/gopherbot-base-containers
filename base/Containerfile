@@ -19,6 +19,7 @@ RUN cd /usr/local && \
 # Add a random UUID to avoid using the cache for desired updates,
 # thanks to https://www.uuidgenerator.net
 ADD https://www.uuidgenerator.net/api/version4 /uuid
+ADD http://worldtimeapi.org/api/timezone/Etc/UTC.txt /timestamp
 
 RUN useradd -d ${homedir} -m -u ${userid} ${username} && \
   dnf -y update && \
@@ -41,3 +42,6 @@ RUN useradd -d ${homedir} -m -u ${userid} ${username} && \
     zip && \
   dnf clean all && \
   rm -rf /var/cache /var/log/dnf* /var/log/dnf.*
+
+# Workaround for theia bug that munges the PATH
+COPY --chown=robot:robot .bashrc ${homedir}/.bashrc
