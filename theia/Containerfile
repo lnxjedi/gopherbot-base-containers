@@ -60,6 +60,7 @@ ARG THEIA_HOME=/usr/local/theia
 
 WORKDIR ${THEIA_HOME}
 ## Refresh from: https://raw.githubusercontent.com/theia-ide/theia-apps/master/theia-full-docker/latest.package.json
+## Note: all references to 'php' scrubbed, to prevent noise message on startup.
 ADD ${THEIA_VERSION}.package.json ./package.json
 RUN chmod 0755 ${THEIA_HOME} && \
   yarn --pure-lockfile && \
