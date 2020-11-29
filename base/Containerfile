@@ -16,13 +16,13 @@ ENV USER=${username}
 RUN cd /usr/local && \
   curl -L https://dl.google.com/go/go${goversion}.linux-amd64.tar.gz | tar xzf -
 
+RUN useradd -d ${homedir} -m -u ${userid} ${username}
 # Add a random UUID to avoid using the cache for desired updates,
 # thanks to https://www.uuidgenerator.net
-ADD https://www.uuidgenerator.net/api/version4 /uuid
-ADD http://worldtimeapi.org/api/timezone/Etc/UTC.txt /timestamp
+ADD --chown=${username}:${username} https://www.uuidgenerator.net/api/version4 /uuid
+ADD --chown=${username}:${username} http://worldtimeapi.org/api/timezone/Etc/UTC.txt /timestamp
 
-RUN useradd -d ${homedir} -m -u ${userid} ${username} && \
-  dnf -y update && \
+RUN dnf -y update && \
   dnf -y install \
     bind-utils \
     procps-ng \
@@ -44,4 +44,4 @@ RUN useradd -d ${homedir} -m -u ${userid} ${username} && \
   rm -rf /var/cache /var/log/dnf* /var/log/dnf.*
 
 # Workaround for theia bug that munges the PATH
-COPY --chown=robot:robot .bashrc ${homedir}/.bashrc
+COPY --chown=${username}:${username} .bashrc ${homedir}/.bashrc
