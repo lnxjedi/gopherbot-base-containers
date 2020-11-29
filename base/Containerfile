@@ -17,10 +17,11 @@ RUN cd /usr/local && \
   curl -L https://dl.google.com/go/go${goversion}.linux-amd64.tar.gz | tar xzf -
 
 RUN useradd -d ${homedir} -m -u ${userid} ${username}
+
 # Add a random UUID to avoid using the cache for desired updates,
 # thanks to https://www.uuidgenerator.net
-ADD --chown=${username}:${username} https://www.uuidgenerator.net/api/version4 /uuid
-ADD --chown=${username}:${username} http://worldtimeapi.org/api/timezone/Etc/UTC.txt /timestamp
+ADD --chown=${userid}:0 https://www.uuidgenerator.net/api/version4 /uuid
+ADD --chown=${userid}:0 http://worldtimeapi.org/api/timezone/Etc/UTC.txt /timestamp
 
 RUN dnf -y update && \
   dnf -y install \
@@ -44,4 +45,4 @@ RUN dnf -y update && \
   rm -rf /var/cache /var/log/dnf* /var/log/dnf.*
 
 # Workaround for theia bug that munges the PATH
-COPY --chown=${username}:${username} .bashrc ${homedir}/.bashrc
+COPY --chown=${userid}:0 .bashrc ${homedir}/.bashrc
