@@ -4,12 +4,11 @@ ARG username=robot
 ARG userid=1000
 ARG nonprivuser=nobody
 
-ARG installdir=/opt
 ARG homedir=/home/robot
 
 ARG goversion=1.15.5
 
-ENV HOME=/home/robot
+ENV HOME=${homedir}
 ENV PATH=${PATH}:${HOME}/go/bin:/usr/local/go/bin:/opt/gopherbot
 ENV USER=${username}
 
