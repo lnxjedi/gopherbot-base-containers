@@ -1,4 +1,4 @@
-FROM quay.io/app-sre/ubi8-ubi:8.3
+FROM quay.io/fedora/fedora:33-x86_64
 
 ARG username=robot
 ARG userid=1000
@@ -6,11 +6,12 @@ ARG nonprivuser=nobody
 
 ARG homedir=/home/robot
 
-ARG goversion=1.15.5
+ARG goversion=1.15.6
 
 ENV HOME=${homedir}
 ENV PATH=${PATH}:${HOME}/go/bin:/usr/local/go/bin:/opt/gopherbot
 ENV USER=${username}
+ENV USERID=${userid}
 
 RUN cd /usr/local && \
   curl -L https://dl.google.com/go/go${goversion}.linux-amd64.tar.gz | tar xzf -
