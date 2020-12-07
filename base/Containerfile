@@ -1,4 +1,4 @@
-FROM quay.io/fedora/fedora:33-x86_64
+FROM quay.io/app-sre/ubi8-ubi:8.3
 
 ARG username=robot
 ARG userid=1000
