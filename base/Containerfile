@@ -21,7 +21,7 @@ RUN useradd -d ${homedir} -m -u ${userid} ${username}
 # Add a random UUID to avoid using the cache for desired updates,
 # thanks to https://www.uuidgenerator.net
 ADD https://www.uuidgenerator.net/api/version4 /uuid
-ADD http://worldtimeapi.org/api/timezone/Etc/UTC.txt /timestamp
+ADD http://worldtimeapi.org/api/timezone/Etc/UTC /timestamp
 # Workaround for theia bug that munges the PATH
 COPY .bashrc ${homedir}/.bashrc
 
