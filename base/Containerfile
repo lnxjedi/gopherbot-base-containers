@@ -6,7 +6,7 @@ ARG nonprivuser=nobody
 
 ARG homedir=/home/robot
 
-ARG goversion=1.15.6
+ARG goversion=1.15.8
 
 ENV HOME=${homedir}
 ENV PATH=${PATH}:${HOME}/go/bin:/usr/local/go/bin:/opt/gopherbot
