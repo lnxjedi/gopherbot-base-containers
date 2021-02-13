@@ -1,3 +1,3 @@
 #!/bin/bash
 
-podman build -f Containerfile -t gopherbot-base:latest .
+podman build -f Containerfile -t quay.io/lnxjedi/gopherbot-base:latest .
