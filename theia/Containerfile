@@ -95,7 +95,7 @@ RUN go get -u -v golang.org/x/tools/gopls && \
   go get -u -v github.com/sqs/goreturns && \
   go get -u -v golang.org/x/lint/golint && \
   go get -u -v golang.org/x/tools/cmd/goimports && \
-  pip3 install -U pylint --user && \
+  python3 -m pip install -U pylint --user && \
   rm -rf ${HOME}/.cache
 USER root:root
 
