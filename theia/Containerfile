@@ -97,7 +97,7 @@ RUN go get -u -v golang.org/x/tools/gopls && \
   go get -u -v golang.org/x/lint/golint && \
   go get -u -v golang.org/x/tools/cmd/goimports && \
   python3 -m pip install -U pylint --user && \
-  ln ${HOME}/go/bin/gocode ${HOME/go/bin/gocode-gomod} && \
+  ln ${HOME}/go/bin/gocode ${HOME}/go/bin/gocode-gomod && \
   rm -rf ${HOME}/.cache ${HOME}/go/src
 USER root:root
 
