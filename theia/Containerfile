@@ -97,8 +97,13 @@ RUN go get -u -v golang.org/x/tools/gopls && \
   go get -u -v golang.org/x/lint/golint && \
   go get -u -v golang.org/x/tools/cmd/goimports && \
   python3 -m pip install -U pylint --user && \
-  rm -rf ${HOME}/.cache
+  ln ${HOME}/go/bin/gocode ${HOME/go/bin/gocode-gomod} && \
+  rm -rf ${HOME}/.cache ${HOME}/go/src
 USER root:root
+
+# TODO: Remove this later, it's an UGLY HACK for Theia's odd
+# PATH munging.
+RUN ln /usr/bin/groups /usr/local/go/bin/groups
 
 ENV SHELL=/bin/bash \
   THEIA_DEFAULT_PLUGINS=local-dir:/usr/local/theia/plugins \
