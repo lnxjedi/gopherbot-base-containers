@@ -1,7 +1,9 @@
 FROM quay.io/lnxjedi/gopherbot-base:latest
 
 ENV NODE_VERSION 12.21.0
-ENV YARN_VERSION 1.22.10
+# NOTE: Matching Theia version of Yarn from
+# https://github.com/nodejs/docker-node/blob/master/12/buster/Dockerfile
+ENV YARN_VERSION 1.22.5
 ENV ARCH x64
 
 ## Install nodejs, npm and yarn
