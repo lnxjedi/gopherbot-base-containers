@@ -77,14 +77,18 @@ RUN chmod 0755 ${THEIA_HOME} && \
   yarn cache clean && \
   chown -R ${USER}:${USER} ${HOME}
 
+ENV GO111MODULE="on"
 USER ${USER}:${USER}
+# NOTE: to generate this list, first I ran the container without
+# ANY of them. The actual code to determine the list is somewhat long
+# and based on a variety of factors.
 RUN go get -u -v golang.org/x/tools/gopls && \
   go get -u -v github.com/uudashr/gopkgs/v2/cmd/gopkgs && \
   go get -u -v github.com/ramya-rao-a/go-outline && \
   go get -u -v github.com/acroca/go-symbols && \
   go get -u -v golang.org/x/tools/cmd/guru && \
   go get -u -v golang.org/x/tools/cmd/gorename && \
-  go get -u -v github.com/cweill/gotests/... && \
+  GO111MODULE=off go get -u -v github.com/cweill/gotests/... && \
   go get -u -v github.com/fatih/gomodifytags && \
   go get -u -v github.com/josharian/impl && \
   go get -u -v github.com/davidrjenni/reftools/cmd/fillstruct && \
