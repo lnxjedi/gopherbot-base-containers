@@ -94,9 +94,8 @@ RUN go get -u -v github.com/mdempsky/gocode && \
     go build -o $GOPATH/bin/gocode-gomod github.com/stamblerre/gocode && \
     rm -rf $GOPATH/src $GOPATH/pkg
 
-WORKDIR /home/theia
+WORKDIR /usr/local/theia
 ADD latest.package.json ./package.json
-ARG GITHUB_TOKEN
 RUN yarn --pure-lockfile && \
     NODE_OPTIONS="--max_old_space_size=4096" yarn theia build && \
     yarn theia download:plugins && \
@@ -112,16 +111,16 @@ RUN yarn --pure-lockfile && \
 RUN adduser --disabled-password --gecos '' theia && \
     chmod g+rw /home && \
     mkdir -p /home/project && \
-    chown -R theia:theia /home/theia && \
+    chown -R theia:theia /usr/local/theia && \
     chown -R theia:theia /home/project
 USER theia
 
 # configure Theia
 ENV SHELL=/bin/bash \
-    THEIA_DEFAULT_PLUGINS=local-dir:/home/theia/plugins  \
+    THEIA_DEFAULT_PLUGINS=local-dir:/usr/local/theia/plugins  \
     # configure user Go path
     GOPATH=/home/project
 ENV PATH=$PATH:$GOPATH/bin
 
 EXPOSE 3000
-ENTRYPOINT [ "node", "/home/theia/src-gen/backend/main.js", "/home/project", "--hostname=0.0.0.0" ]
+ENTRYPOINT [ "node", "/usr/local/theia/src-gen/backend/main.js", "/home/project", "--hostname=0.0.0.0" ]
