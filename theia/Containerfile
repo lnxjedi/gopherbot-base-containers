@@ -108,19 +108,15 @@ RUN yarn --pure-lockfile && \
     yarn cache clean
 
 # See : https://github.com/theia-ide/theia-apps/issues/34
-RUN adduser --disabled-password --gecos '' theia && \
-    chmod g+rw /home && \
-    mkdir -p /home/project && \
-    chown -R theia:theia /usr/local/theia && \
-    chown -R theia:theia /home/project
+RUN adduser -u 700 --disabled-password --gecos '' theia
 USER theia
 
 # configure Theia
 ENV SHELL=/bin/bash \
     THEIA_DEFAULT_PLUGINS=local-dir:/usr/local/theia/plugins  \
     # configure user Go path
-    GOPATH=/home/project
+    GOPATH=/home/theia
 ENV PATH=$PATH:$GOPATH/bin
 
 EXPOSE 3000
-ENTRYPOINT [ "node", "/usr/local/theia/src-gen/backend/main.js", "/home/project", "--hostname=0.0.0.0" ]
+ENTRYPOINT [ "node", "/usr/local/theia/src-gen/backend/main.js", "/home/theia", "--hostname=0.0.0.0" ]
