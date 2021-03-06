@@ -94,6 +94,10 @@ RUN go get -u -v github.com/mdempsky/gocode && \
     go build -o $GOPATH/bin/gocode-gomod github.com/stamblerre/gocode && \
     rm -rf $GOPATH/src $GOPATH/pkg
 
+# gopls is a little special
+RUN GO111MODULE=on go get -v golang.org/x/tools/gopls@latest && \
+  rm -rf $GOPATH/src $GOPATH/pkg
+
 WORKDIR /usr/local/theia
 ADD latest.package.json ./package.json
 RUN yarn --pure-lockfile && \
@@ -117,9 +121,6 @@ RUN apt-get update \
       python-language-server \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/*
-
-# gopls is a little special
-RUN GO111MODULE=on go get -v golang.org/x/tools/gopls@latest
 
 # Tiny little init
 RUN cd / && \
