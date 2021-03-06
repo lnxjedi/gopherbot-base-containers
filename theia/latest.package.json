@@ -5,7 +5,8 @@
             "config": {
                 "applicationName": "Theia Gopherbot IDE",
                 "preferences": {
-                    "files.enableTrash": false
+                    "files.enableTrash": false,
+                    "go.useLanguageServer": true
                 }
             }
         }
