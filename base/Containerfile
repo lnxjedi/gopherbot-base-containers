@@ -1,28 +1,12 @@
 FROM mirror.gcr.io/library/ubuntu:latest
 
-ARG username=robot
-ARG userid=1000
-ARG nonprivuser=nobody
+ENV GO_VERSION 1.15.8
 
-ARG homedir=/home/robot
+# Add an informational timestamp; also busts the cache
+# to force image rebuilds. Only rebuilt weekly.
+ADD http://worldclockapi.com/api/json/utc/now /base-image-timestamp
 
-ARG goversion=1.15.8
-
-ENV HOME=${homedir}
-ENV PATH=${PATH}:${HOME}/go/bin:${HOME}/.local/bin:/usr/local/go/bin:/opt/gopherbot
-ENV USER=${username}
-ENV USERID=${userid}
-
-RUN useradd -d ${homedir} -m -u ${userid} ${username}
-
-# Add a random UUID to avoid using the cache for desired updates,
-# thanks to https://www.uuidgenerator.net
-ADD https://www.uuidgenerator.net/api/version4 /uuid
-#ADD http://worldtimeapi.org/api/timezone/Etc/UTC /timestamp
-ADD http://worldclockapi.com/api/json/utc/now /timestamp
-
-RUN chown ${username}:${username} /uuid /timestamp && \
-  chmod 644 /uuid /timestamp
+RUN chmod 644 /base-image-timestamp
 
 RUN apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \
@@ -42,5 +26,9 @@ RUN apt-get update && \
     zip && \
   rm -rf /var/lib/apt/lists/*
 
-RUN cd /usr/local && \
-  curl -L https://dl.google.com/go/go${goversion}.linux-amd64.tar.gz | tar xzf -
+ENV GOOS=linux \
+  GOARCH=amd64
+ENV PATH=/usr/local/go/bin:$PATH
+
+# install Go
+RUN curl -fsSL https://storage.googleapis.com/golang/go$GO_VERSION.$GOOS-$GOARCH.tar.gz | tar -C /usr/local -xzv
