@@ -118,6 +118,18 @@ RUN apt-get update \
     && rm -rf /var/lib/apt/lists/* \
     && rm -rf /tmp/*
 
+# gopls is a little special
+RUN GO111MODULE=on go get -v golang.org/x/tools/gopls@latest
+
+# Tiny little init
+RUN cd / && \
+  git clone https://github.com/lnxjedi/dinit.git build && \
+  cd build && \
+  make && \
+  mv dinit / && \
+  cd / && \
+  rm -rf build
+
 # See : https://github.com/theia-ide/theia-apps/issues/34
 RUN adduser -u 700 --disabled-password --gecos '' theia
 USER theia
@@ -129,4 +141,4 @@ ENV SHELL=/bin/bash \
     GOPATH=/home/theia
 
 EXPOSE 3000
-ENTRYPOINT [ "node", "/usr/local/theia/src-gen/backend/main.js", "/home/theia", "--hostname=0.0.0.0" ]
+ENTRYPOINT [ "/dinit", "-r", "ssh-agent", "node", "/usr/local/theia/src-gen/backend/main.js", "/home/theia", "--hostname=0.0.0.0" ]
