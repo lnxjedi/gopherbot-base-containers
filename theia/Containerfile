@@ -127,7 +127,6 @@ ENV SHELL=/bin/bash \
     THEIA_DEFAULT_PLUGINS=local-dir:/usr/local/theia/plugins  \
     # configure user Go path
     GOPATH=/home/theia
-ENV PATH=$PATH:$GOPATH/bin
 
 EXPOSE 3000
 ENTRYPOINT [ "node", "/usr/local/theia/src-gen/backend/main.js", "/home/theia", "--hostname=0.0.0.0" ]
