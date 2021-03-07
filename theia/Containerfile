@@ -113,7 +113,6 @@ RUN yarn --pure-lockfile && \
 
 RUN apt-get update \
     && apt-get install -y python3-dev python3-pip \
-    && pip3 install --upgrade pip --user \
     && pip3 install \
       autopep8 \
       flake8 \
@@ -129,7 +128,7 @@ RUN cd / && \
   make && \
   mv dinit / && \
   cd / && \
-  rm -rf build
+  rm -rf /build /root/.cache
 
 # See : https://github.com/theia-ide/theia-apps/issues/34
 RUN adduser -u 700 --disabled-password --gecos '' theia
