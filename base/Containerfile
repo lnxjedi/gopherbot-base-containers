@@ -1,6 +1,6 @@
 FROM mirror.gcr.io/library/ubuntu:latest
 
-ENV GO_VERSION 1.15.8
+ENV GO_VERSION 1.15.10
 
 # Add an informational timestamp; also busts the cache
 # to force image rebuilds. Only rebuilt weekly.
