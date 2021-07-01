@@ -2,12 +2,6 @@ FROM mirror.gcr.io/library/ubuntu:latest
 
 ENV GO_VERSION 1.15.10
 
-# Add an informational timestamp; also busts the cache
-# to force image rebuilds. Only rebuilt weekly.
-ADD http://worldclockapi.com/api/json/utc/now /base-image-timestamp
-
-RUN chmod 644 /base-image-timestamp
-
 RUN apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \
     bind9-dnsutils \
