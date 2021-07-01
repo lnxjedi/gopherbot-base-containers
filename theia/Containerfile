@@ -5,13 +5,18 @@ FROM quay.io/lnxjedi/gopherbot-base:latest
 # ... with theia go/python from:
 # https://github.com/theia-ide/theia-apps
 
-ENV NODE_VERSION 12.21.0
-ENV YARN_VERSION 1.22.10
-ENV ARCH x64
+ENV NODE_VERSION 12.22.1
 
-## Install nodejs, npm and yarn
-## Refresh from https://github.com/nodejs/docker-node/blob/master/12/buster/Dockerfile
-RUN ARCH=${ARCH} \
+RUN ARCH= && dpkgArch="$(dpkg --print-architecture)" \
+  && case "${dpkgArch##*-}" in \
+    amd64) ARCH='x64';; \
+    ppc64el) ARCH='ppc64le';; \
+    s390x) ARCH='s390x';; \
+    arm64) ARCH='arm64';; \
+    armhf) ARCH='armv7l';; \
+    i386) ARCH='x86';; \
+    *) echo "unsupported architecture"; exit 1 ;; \
+  esac \
   # gpg keys listed at https://github.com/nodejs/node#release-keys
   && set -ex \
   && for key in \
@@ -41,6 +46,8 @@ RUN ARCH=${ARCH} \
   # smoke tests
   && node --version \
   && npm --version
+
+ENV YARN_VERSION 1.22.5
 
 RUN set -ex \
   && for key in \
