@@ -1,0 +1,16 @@
+FROM buildpack-deps:bullseye
+
+# Enough stuff to run bash, python, and ruby extensions
+RUN apt-get update && \
+  DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    bind9-dnsutils \
+    jq \
+    python3-pip \
+    ruby \
+    vim && \
+  rm -rf /var/lib/apt/lists/*
+
+RUN useradd -d /var/lib/robot -r -c "Gopherbot Robot" robot && \
+  mkdir -p /var/lib/robot && \
+  chown robot:robot /var/lib/robot && \
+  chmod 0755 /var/lib/robot
