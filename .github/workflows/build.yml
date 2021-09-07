@@ -31,8 +31,6 @@ jobs:
           file: base/Containerfile
           push: true
           tags: quay.io/lnxjedi/gopherbot-base:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new
       -
         name: Build and push theia
         uses: docker/build-push-action@v2
@@ -41,5 +39,3 @@ jobs:
           file: theia/Containerfile
           push: true
           tags: quay.io/lnxjedi/gopherbot-base-theia:latest
-          cache-from: type=local,src=/tmp/.buildx-cache
-          cache-to: type=local,dest=/tmp/.buildx-cache-new
