@@ -23,6 +23,7 @@ RUN apt-get update && \
   DEBIAN_FRONTEND=noninteractive apt-get install -y \
     bind9-dnsutils \
     jq \
+    libsecret-1-0 \
     python3-dev \
     python3-pip \
     ruby \
@@ -37,7 +38,7 @@ RUN apt-get update && \
   rm -rf /var/lib/apt/lists/* && \
   rm -rf /tmp/*
 
-RUN useradd -d /var/lib/robot -r -c "Gopherbot Robot" robot && \
+RUN useradd -d /var/lib/robot -r -c "Gopherbot Robot" -u 994 robot && \
   mkdir -p /var/lib/robot && \
   chown robot:robot /var/lib/robot && \
   chmod 0755 /var/lib/robot
