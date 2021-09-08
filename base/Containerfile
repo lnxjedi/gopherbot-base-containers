@@ -10,7 +10,21 @@ RUN apt-get update && \
     vim && \
   rm -rf /var/lib/apt/lists/*
 
-RUN useradd -d /var/lib/robot -r -c "Gopherbot Robot" -u 994 robot && \
-  mkdir -p /var/lib/robot && \
-  chown robot:robot /var/lib/robot && \
-  chmod 0755 /var/lib/robot
+# Start common section
+ENV ROBOT_UID=994
+ENV SHELL=/bin/bash
+ENV HOME=/var/lib/robot
+ENV PATH=$PATH:${HOME}/bin:${HOME}/.local/bin:/opt/gopherbot
+
+RUN useradd -d ${HOME} -r -c "Gopherbot Robot" -u ${ROBOT_UID} robot && \
+  mkdir -p ${HOME} && \
+  chown robot:robot ${HOME} && \
+  chmod 0755 ${HOME}
+
+USER ${ROBOT_UID}:${ROBOT_UID}
+COPY --chown=${ROBOT_UID}:${ROBOT_UID} robot-bashrc ${HOME}/.bashrc
+RUN ln -s /opt/gopherbot ${HOME}/robot-defaults && \
+  mkdir ${HOME}/bin
+# End common section
+
+WORKDIR ${HOME}

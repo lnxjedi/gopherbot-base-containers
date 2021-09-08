@@ -4,7 +4,7 @@ RUN apt-get update && apt-get install -y libsecret-1-dev
 WORKDIR /usr/local/theia
 # From https://github.com/theia-ide/theia-apps/tree/master/theia-python-docker;
 # modified applicationName "Theia Gopherbot IDE"
-ADD latest.package.json ./package.json
+COPY theia/latest.package.json /usr/local/theia/package.json
 RUN yarn --pure-lockfile && \
     NODE_OPTIONS="--max_old_space_size=4096" yarn theia build && \
     yarn theia download:plugins && \
@@ -38,17 +38,28 @@ RUN apt-get update && \
   rm -rf /var/lib/apt/lists/* && \
   rm -rf /tmp/*
 
-RUN useradd -d /var/lib/robot -r -c "Gopherbot Robot" -u 994 robot && \
-  mkdir -p /var/lib/robot && \
-  chown robot:robot /var/lib/robot && \
-  chmod 0755 /var/lib/robot
+# Start common section
+ENV ROBOT_UID=994
+ENV SHELL=/bin/bash
+ENV HOME=/var/lib/robot
+ENV PATH=$PATH:${HOME}/bin:${HOME}/.local/bin:/opt/gopherbot
+
+RUN useradd -d ${HOME} -r -c "Gopherbot Robot" -u ${ROBOT_UID} robot && \
+  mkdir -p ${HOME} && \
+  chown robot:robot ${HOME} && \
+  chmod 0755 ${HOME}
+
+USER ${ROBOT_UID}:${ROBOT_UID}
+COPY --chown=${ROBOT_UID}:${ROBOT_UID} robot-bashrc ${HOME}/.bashrc
+RUN ln -s /opt/gopherbot ${HOME}/robot-defaults && \
+  mkdir ${HOME}/bin
+# End common section
 
 WORKDIR /usr/local/theia
 COPY --from=0 /usr/local/theia /usr/local/theia
 EXPOSE 3000
 
 # configure Theia
-ENV SHELL=/bin/bash \
-    THEIA_DEFAULT_PLUGINS=local-dir:/usr/local/theia/plugins
+ENV THEIA_DEFAULT_PLUGINS=local-dir:/usr/local/theia/plugins
 
 ENTRYPOINT [ "node", "/usr/local/theia/src-gen/backend/main.js", "/var/lib/robot", "--hostname=0.0.0.0" ]
