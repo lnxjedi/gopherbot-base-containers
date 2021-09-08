@@ -27,7 +27,6 @@ jobs:
         name: Build and push base
         uses: docker/build-push-action@v2
         with:
-          context: base/
           file: base/Containerfile
           push: true
           tags: quay.io/lnxjedi/gopherbot-base:latest
@@ -35,7 +34,6 @@ jobs:
         name: Build and push theia
         uses: docker/build-push-action@v2
         with:
-          context: theia/
           file: theia/Containerfile
           push: true
           tags: quay.io/lnxjedi/gopherbot-base-theia:latest
