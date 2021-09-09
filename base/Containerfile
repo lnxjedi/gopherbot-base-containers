@@ -15,6 +15,8 @@ ENV ROBOT_UID=994
 ENV SHELL=/bin/bash
 ENV HOME=/var/lib/robot
 ENV PATH=$PATH:${HOME}/bin:${HOME}/.local/bin:/opt/gopherbot
+ENV RUBYLIB=/opt/gopherbot/lib
+ENV PYTHONPATH=/opt/gopherbot/lib
 
 RUN useradd -d ${HOME} -r -c "Gopherbot Robot" -u ${ROBOT_UID} robot && \
   mkdir -p ${HOME} && \
